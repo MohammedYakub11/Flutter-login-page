@@ -1,4 +1,4 @@
-import 'package:email_validator/email_validator.dart';
+// import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 class MyLogin extends StatefulWidget {
@@ -10,46 +10,36 @@ class MyLogin extends StatefulWidget {
 
 class _MyLoginState extends State<MyLogin> {
   final formKey = GlobalKey<FormState>();
-  String? validateEmail(String? value){
-    if(value == null || value.isEmpty){
-      return 'Please enter an email address.';
-    }
-    if(!EmailValidator.validate(value)){
-      return 'Please enter an email address.';
-    }
-    return null;
-  }
-
-  String? validatePassword(String? value){
-    if(value == null || value.isEmpty){
-      return 'Please enter a password.';
-    }
-    if(value.length <8){
-      return 'Password must be atleast 8 characters long.';
-    }
-    return null;
-  }
+  final _formfield= GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passController = TextEditingController();
+  bool passToggle = true;
+  // String? validateEmail(String? value){
+  //   if(value == null || value.isEmpty){
+  //     return 'Please enter an email address.';
+  //   }
+  //   if(!EmailValidator.validate(value)){
+  //     return 'Please enter an email address.';
+  //   }
+  //   return null;
+  // }
+  //
+  // String? validatePassword(String? value){
+  //   if(value == null || value.isEmpty){
+  //     return 'Please enter a password.';
+  //   }
+  //   if(value.length <8){
+  //     return 'Password must be atleast 8 characters long.';
+  //   }
+  //   return null;
+  // }
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(),
-      drawer: Drawer(
-        // elevation: 14.0,
-        child: ListView(
-          children: [
-            UserAccountsDrawerHeader(
-              accountEmail: Text("myrazakhan@ideassion.com"),
-              accountName: Text("Mohammed Yakub"),
-            ),
-            ListTile(leading: Icon(Icons.home), title: Text("Home"), onTap:(){},),
-            ListTile(leading: Icon(Icons.call), title: Text("Contact"), onTap:(){},),
-            ListTile(leading: Icon(Icons.account_box), title: Text("Profile"), onTap:(){},),
-          ],
-        ),
-      ),
+
       body: Center(
         child: Container(
           // constraints: BoxConstraints(maxWidth: 1000),
@@ -63,10 +53,10 @@ class _MyLoginState extends State<MyLogin> {
           child: Stack(
             children: [
               Container(
-                padding: EdgeInsets.only(left: 50, top: 135),
+                padding: EdgeInsets.only(left: 50, top: 150),
                 child: Text(
-                  'Welcome\n      Back!',
-                  style: TextStyle(color: Colors.white, fontSize: 33),
+                  'Sign In!',
+                  style: TextStyle(color: Colors.white, fontSize: 35),
                 ),
               ),
               SingleChildScrollView(
@@ -78,45 +68,74 @@ class _MyLoginState extends State<MyLogin> {
                   ),
                   constraints: BoxConstraints(maxWidth: 500),
                   alignment: Alignment.center,
+
+
+                  child: Form(
+                    key: _formfield,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        controller: emailController,
                         decoration: InputDecoration(
                           fillColor: Colors.grey.shade100,
                           filled: true,
-                          hintText: 'Email',
+                          labelText: 'Email',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
 
                           ),
+                          prefixIcon: Icon(Icons.email_outlined),
+
                         ),
-                        validator: validateEmail,
-                        // {
-                        //   // if(value!.isEmpty || !RegExp(r'^[\w-\.-]+@([\w-]+\.)+[\w]{2,6}+$').hasMatch(value!)){
-                        //   //   return "Enter Correct Email";
-                        //   // }
-                        //   // else{
-                        //   //   return null;
-                        //   // }
-                        //
-                        // },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value)
+                        {
+                          bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%^&*+_-`'/?={|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value!);
+                          if(value.isEmpty){
+                            return "Enter Email";
+                          }
+
+                          if(!emailValid){
+                            return "Enter valid Email";
+                          }
+                        },
+                        // autovalidateMode: AutovalidateMode.onUserInteraction,
                       ),
                       SizedBox(
                         height: 30,
                       ),
                       TextFormField(
-                        obscureText: true,
+                        obscureText: passToggle,
+                        keyboardType: TextInputType.emailAddress,
+                        controller: passController,
                         decoration: InputDecoration(
                           fillColor: Colors.grey.shade100,
                           filled: true,
-                          hintText: 'Password',
+                          labelText: 'Password',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
+                          prefixIcon: Icon(Icons.lock),
+                          suffixIcon: InkWell(
+                            onTap: (){
+                              setState((){
+                                passToggle= !passToggle;
+
+                              });
+                            },
+                            child: Icon(passToggle ? Icons.visibility : Icons.visibility_off),
+
+                          ),
                         ),
-                        validator: validatePassword,
+                        validator: (value){
+                          if(value!.isEmpty){
+                            return "Enter Password";
+                          }
+                          else if(passController.text.length <6){
+                            return "Password must be at least 6 characters long";
+                          }
+                        },
                         // {
                         //   if(value!.isEmpty || value.length < 6){
                         //     return "Password must be at least 6 characters long";
@@ -125,12 +144,24 @@ class _MyLoginState extends State<MyLogin> {
                         //     return null;
                         //   }
                         // },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        // autovalidateMode: AutovalidateMode.onUserInteraction,
                       ),
+
+                      //
                       SizedBox(
                         height: 40,
                       ),
-                      Center(
+
+                      InkWell(
+                        onTap: (){
+                          if(_formfield.currentState!.validate()){
+                            print('Success');
+                            emailController.clear();
+                            passController.clear();
+                          }
+                        },
+
+                      child: Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -149,11 +180,13 @@ class _MyLoginState extends State<MyLogin> {
                               child: IconButton(
                                 color: Colors.white,
                                 onPressed: () {
+
                                   if (
-                                  formKey.currentState!.validate()
+                                  _formfield.currentState!.validate()
                                   )
                                   {
-                                    print("Welcome");
+                                    Navigator.pushNamed(context, 'Homepage');
+
                                   }
 
                                 },
@@ -163,39 +196,42 @@ class _MyLoginState extends State<MyLogin> {
                           ],
                         ),
                       ),
+                      ),
                       SizedBox(
                         height: 40,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, 'register');
-                            },
-                            child: Text(
-                              'Sign Up',
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                fontSize: 18,
-                                color: Color(0xff4c505b),
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Forgot Password',
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                fontSize: 18,
-                                color: Color(0xff4c505b),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     TextButton(
+                      //       onPressed: () {
+                      //         Navigator.pushNamed(context, 'Homepage');
+                      //       },
+                      //       child: Text(
+                      //         'Sign Up',
+                      //         style: TextStyle(
+                      //           decoration: TextDecoration.underline,
+                      //           fontSize: 18,
+                      //           color: Color(0xff4c505b),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     // TextButton(
+                      //     //   onPressed: () {},
+                      //     //   child: Text(
+                      //     //     'Forgot Password',
+                      //     //     style: TextStyle(
+                      //     //       decoration: TextDecoration.underline,
+                      //     //       fontSize: 18,
+                      //     //       color: Color(0xff4c505b),
+                      //     //     ),
+                      //     //   ),
+                      //     // ),
+                      //   ],
+                      // ),
                     ],
+                  ),
                   ),
                 ),
               ),
