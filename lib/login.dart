@@ -14,25 +14,7 @@ class _MyLoginState extends State<MyLogin> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   bool passToggle = true;
-  // String? validateEmail(String? value){
-  //   if(value == null || value.isEmpty){
-  //     return 'Please enter an email address.';
-  //   }
-  //   if(!EmailValidator.validate(value)){
-  //     return 'Please enter an email address.';
-  //   }
-  //   return null;
-  // }
-  //
-  // String? validatePassword(String? value){
-  //   if(value == null || value.isEmpty){
-  //     return 'Please enter a password.';
-  //   }
-  //   if(value.length <8){
-  //     return 'Password must be atleast 8 characters long.';
-  //   }
-  //   return null;
-  // }
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -42,7 +24,7 @@ class _MyLoginState extends State<MyLogin> {
 
       body: Center(
         child: Container(
-          // constraints: BoxConstraints(maxWidth: 1000),
+
           constraints: BoxConstraints.expand(),
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -100,7 +82,7 @@ class _MyLoginState extends State<MyLogin> {
                             return "Enter valid Email";
                           }
                         },
-                        // autovalidateMode: AutovalidateMode.onUserInteraction,
+
                       ),
                       SizedBox(
                         height: 30,
@@ -136,15 +118,7 @@ class _MyLoginState extends State<MyLogin> {
                             return "Password must be at least 6 characters long";
                           }
                         },
-                        // {
-                        //   if(value!.isEmpty || value.length < 6){
-                        //     return "Password must be at least 6 characters long";
-                        //   }
-                        //   else{
-                        //     return null;
-                        //   }
-                        // },
-                        // autovalidateMode: AutovalidateMode.onUserInteraction,
+
                       ),
 
                       //
