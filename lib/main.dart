@@ -14,13 +14,13 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => Shop(),
-        // child : NavigationProvider() ,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => NavigationProvider()),
+        ChangeNotifierProvider(create: (context) => Shop()),
+      ],
       child: const MyApp(),
     ),
-
-
   );
 }
 

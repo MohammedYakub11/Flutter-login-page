@@ -13,7 +13,7 @@ class ShopPage extends StatefulWidget {
 
 class _ShopPageState extends State<ShopPage> {
   int _selectedIndex = 0;
-  void _onItemTapped(int index) {
+  void _handleDrawerItemSelection(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -34,7 +34,7 @@ class _ShopPageState extends State<ShopPage> {
                 icon: const Icon(Icons.shopping_cart_outlined))
           ],
         ),
-        drawer: MyDrawer(),
+        drawer: MyDrawer(onItemSelected: _handleDrawerItemSelection),
         backgroundColor: Colors.white,
         body: ListView(
           children: [
@@ -110,6 +110,7 @@ class _ShopPageState extends State<ShopPage> {
         ));
   }
 }
+
 
 
 

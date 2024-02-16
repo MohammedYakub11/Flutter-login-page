@@ -1,8 +1,7 @@
-// enum NavigationItem{
-//   header,
-//   shop,
-//
-//   cart,
-//   exit
-//
-// }
+enum NavigationItem{
+  shop,
+  cart,
+  account,
+  exit,
+
+}

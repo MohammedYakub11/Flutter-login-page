@@ -5,11 +5,24 @@ import 'package:provider/provider.dart';
 
 import '../components/my_drawer.dart';
 
-class CartPage extends StatelessWidget {
-  const CartPage({super.key});
+class CartPage extends StatefulWidget {
+
+   CartPage({Key? key}) : super(key: key);
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  int _selectedIndex = 1;
+
+   void _handleDrawerItemSelection(int index) {
+     setState(() {
+       _selectedIndex = index;
+     });
+   }
 
   //remove item from cart
-
   void removeItemFromCart(BuildContext context, Product product) {
 //show a dialog box to ask user to confirm to remove from cart
     showDialog(
@@ -48,7 +61,10 @@ class CartPage extends StatelessWidget {
         elevation: 0,
         title: const Text("Cart Page"),
       ),
-      drawer: MyDrawer(),
+      drawer: MyDrawer(onItemSelected: _handleDrawerItemSelection),
+      // drawer: MyDrawer(onItemSelected: (index) {
+      //   _selectedDrawerIndex = index;
+      // },),
       body: Column(children: [
         //cart list
         Expanded(
